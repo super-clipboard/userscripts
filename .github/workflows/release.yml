@@ -1,5 +1,18 @@
 name: release
 
+# Triggered by pushing a tag like `v1.2.3`. Workflow steps:
+#   1. Check out the tagged commit + full history (needed to push to main).
+#   2. Rebuild manifest.json from scripts/*/meta.json + .user.js sources.
+#   3. If the rebuilt manifest differs from what's in the tagged commit:
+#        a. Commit the regenerated manifest.json onto main ([skip ci] marker).
+#        b. Force-move the tag to point at the new HEAD so jsDelivr's
+#           `@<tag>` and `@latest` paths resolve to the synced manifest.
+#   4. Create the GitHub Release at the (possibly updated) tag and attach
+#      manifest.json as an asset (Releases-based fallback URL).
+#
+# Net effect: developers can bump per-script `meta.json` and tag without
+# manually running build-manifest.mjs locally.
+
 on:
   push:
     tags:
@@ -13,21 +26,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Default GITHUB_TOKEN with `permissions: contents: write` is
+          # enough to push to main and re-tag.
+          persist-credentials: true
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Rebuild manifest (ensure freshness)
+      - name: Rebuild manifest
         run: node scripts/build-manifest.mjs
 
-      - name: Verify manifest matches commit
+      - name: Sync manifest.json to main if drifted
+        id: sync
         run: |
-          if ! git diff --quiet -- manifest.json; then
-            echo "::error::manifest.json is stale at this tag. Tag was pushed without committing the latest manifest." >&2
-            git --no-pager diff -- manifest.json
-            exit 1
+          set -euo pipefail
+          if git diff --quiet -- manifest.json; then
+            echo "manifest unchanged"
+            echo "synced=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          TAG="${GITHUB_REF_NAME}"
+          echo "manifest drifted; syncing to main and re-pointing tag $TAG"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Replay the manifest update on top of main and push.
+          git fetch origin main
+          git checkout main
+          git checkout "$GITHUB_SHA" -- scripts manifest.json
+          node scripts/build-manifest.mjs
+          git add manifest.json
+          git commit -m "chore: sync manifest.json for $TAG [skip ci]"
+          git push origin main
+
+          # Force-move the tag so external consumers (jsDelivr `@<tag>`,
+          # GitHub Release source archive) see the synced manifest.
+          git tag -f "$TAG"
+          git push origin "$TAG" --force
+
+          echo "synced=true" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release with manifest asset
         uses: softprops/action-gh-release@v2
