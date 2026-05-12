@@ -1,7 +1,14 @@
 {
   "name": "@ziuchen/super-clipboard-userscripts",
   "version": "0.1.0",
-  "description": "Manifest + bundled .user.js sources for the SuperClipboard script market.",
+  "description": "SuperClipboard script-market manifest, bundled .user.js sources, and a small JS library (URL helpers, manifest validator, mirror presets).",
+  "keywords": [
+    "clipboard",
+    "manifest",
+    "superclipboard",
+    "userscript",
+    "utools"
+  ],
   "homepage": "https://github.com/super-clipboard/userscripts",
   "bugs": {
     "url": "https://github.com/super-clipboard/userscripts/issues"
@@ -12,11 +19,26 @@
     "url": "git+https://github.com/super-clipboard/userscripts.git"
   },
   "files": [
+    "lib",
     "manifest.json",
     "scripts"
   ],
+  "type": "module",
+  "main": "./lib/index.mjs",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs",
+      "default": "./lib/index.mjs"
+    },
+    "./manifest.json": "./manifest.json",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "node scripts/build-manifest.mjs",
-    "prepublishOnly": "node scripts/build-manifest.mjs"
+    "test": "node --test tests/lib.test.mjs",
+    "prepublishOnly": "node scripts/build-manifest.mjs && node --test tests/lib.test.mjs"
   }
 }
