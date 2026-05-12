@@ -6,11 +6,16 @@
  *
  * Layout convention:
  *   scripts/<id>/<id>.user.js   # script body, must contain ==UserScript== block
- *   scripts/<id>/meta.json      # { id, name, description, author, homepage, tags, preinstall, private }
  *   scripts/<id>/README.md      # optional human-facing docs (not used here)
  *
- * Anything where `meta.json.private === true` (or the directory name starts
- * with `_`) is excluded from the published manifest.
+ * Everything is read from the ==UserScript== header. In addition to the
+ * standard directives we recognise two custom ones:
+ *
+ *   // @tag         text          (repeatable; collected into manifest.tags)
+ *   // @tag         ocr
+ *   // @preinstall  true          (defaults to false)
+ *
+ * Directories whose name starts with `_` are skipped (used for `_template`).
  *
  * Distribution: this repo is published as the npm package
  *   @ziuchen/super-clipboard-userscripts
@@ -44,16 +49,22 @@ const PKG_VERSION = PKG.version;
 const MIRROR_BASE = `https://registry.npmmirror.com/${PKG_NAME}/${PKG_VERSION}/files`;
 
 const META_RE = /\/\/\s*@(\S+)\s+(.+?)\s*$/gm;
+const MULTI_KEYS = new Set(["tag", "match-clip", "require", "grant"]);
 
-function parseScriptMeta(source) {
+function parseScriptHeader(source) {
   const m = source.match(/\/\/\s*==UserScript==[\s\S]+?\/\/\s*==\/UserScript==/);
   if (!m) throw new Error("missing ==UserScript== block");
-  const out = {};
+  const single = {};
+  const multi = {};
   for (const match of m[0].matchAll(META_RE)) {
     const [, key, value] = match;
-    if (out[key] == null) out[key] = value;
+    if (MULTI_KEYS.has(key)) {
+      (multi[key] ??= []).push(value);
+    } else if (single[key] == null) {
+      single[key] = value;
+    }
   }
-  return out;
+  return { ...single, ...multi };
 }
 
 async function main() {
@@ -61,23 +72,14 @@ async function main() {
   const dirs = entries
     .filter((e) => e.isDirectory())
     .map((e) => e.name)
+    .filter((n) => !n.startsWith("_"))
     .sort();
 
   const items = [];
   for (const id of dirs) {
     const dir = join(SCRIPTS_DIR, id);
-    const metaPath = join(dir, "meta.json");
     const scriptPath = join(dir, `${id}.user.js`);
 
-    let meta;
-    try {
-      meta = JSON.parse(await readFile(metaPath, "utf8"));
-    } catch {
-      console.warn(`[manifest] skip ${id}/: missing or invalid meta.json`);
-      continue;
-    }
-
-    const isPrivate = meta.private === true || id.startsWith("_");
     let scriptStat;
     try {
       scriptStat = await stat(scriptPath);
@@ -87,29 +89,27 @@ async function main() {
     }
     if (!scriptStat.isFile()) continue;
 
-    if (isPrivate) {
-      console.log(`  [-] ${id}/  (private, skipped)`);
-      continue;
-    }
-
     const source = await readFile(scriptPath, "utf8");
-    const scriptMeta = parseScriptMeta(source);
+    const header = parseScriptHeader(source);
     const sha256 = createHash("sha256").update(source).digest("hex");
     const downloadURL = `${MIRROR_BASE}/scripts/${id}/${id}.user.js`;
+    const tags = Array.isArray(header.tag) ? header.tag : [];
+    const preinstall = String(header.preinstall ?? "").toLowerCase() === "true";
+
     items.push({
       id,
-      name: meta.name ?? scriptMeta.name ?? id,
-      description: meta.description ?? scriptMeta.description,
-      author: meta.author ?? scriptMeta.author,
-      homepage: meta.homepage,
-      version: scriptMeta.version ?? "0.0.0",
-      tags: Array.isArray(meta.tags) ? meta.tags : [],
-      preinstall: meta.preinstall === true,
+      name: header.name ?? id,
+      description: header.description ?? "",
+      author: header.author,
+      homepage: header.homepage,
+      version: header.version ?? "0.0.0",
+      tags,
+      preinstall,
       downloadURL,
-      updateURL: scriptMeta.updateURL ?? downloadURL,
+      updateURL: header.updateURL ?? downloadURL,
       sha256,
     });
-    console.log(`  [+] ${id}/  v${scriptMeta.version}  ${sha256.slice(0, 12)}…`);
+    console.log(`  [+] ${id}/  v${header.version}  ${sha256.slice(0, 12)}…`);
   }
 
   const manifest = { manifestVersion: 1, items };
