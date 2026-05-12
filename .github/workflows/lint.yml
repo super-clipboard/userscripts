@@ -1,0 +1,53 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify manifest is up to date
+        run: |
+          node scripts/build-manifest.mjs
+          if ! git diff --quiet -- manifest.json; then
+            echo "::error::manifest.json is stale. Run \`node scripts/build-manifest.mjs\` and commit." >&2
+            git --no-pager diff -- manifest.json
+            exit 1
+          fi
+
+      - name: Lint user scripts
+        shell: bash
+        run: |
+          shopt -s nullglob
+          fail=0
+          for dir in scripts/*/; do
+            id=$(basename "$dir")
+            [[ "$id" == _* ]] && continue
+            script="$dir$id.user.js"
+            meta="$dir""meta.json"
+            if [[ ! -f "$script" ]]; then
+              echo "::error file=$dir::missing $id.user.js" >&2
+              fail=1; continue
+            fi
+            if [[ ! -f "$meta" ]]; then
+              echo "::error file=$dir::missing meta.json" >&2
+              fail=1; continue
+            fi
+            if ! grep -q '==UserScript==' "$script"; then
+              echo "::error file=$script::missing ==UserScript== block" >&2
+              fail=1
+            fi
+            if ! grep -qE '@version[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+' "$script"; then
+              echo "::error file=$script::missing or invalid @version" >&2
+              fail=1
+            fi
+          done
+          exit $fail

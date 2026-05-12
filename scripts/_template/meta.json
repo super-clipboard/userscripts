@@ -1,0 +1,9 @@
+{
+  "id": "_template",
+  "name": "示例脚本",
+  "description": "复制本目录到 scripts/<your-id>/ 并改写后即可发布。本条目不会被发布到 manifest（id 以下划线开头视为私有）。",
+  "author": "you",
+  "tags": ["example"],
+  "preinstall": false,
+  "private": true
+}
