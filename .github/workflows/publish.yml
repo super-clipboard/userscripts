@@ -33,12 +33,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org/
 
-      # Native OIDC trusted-publisher flow needs npm CLI >= 11.5.1.
-      - name: Upgrade npm to OIDC-capable release
-        run: npm install -g npm@latest
+      # Node 24 ships with npm >= 11.5.1, which satisfies the
+      # `id-token`-based OIDC trusted publisher requirement; no global
+      # `npm install -g npm@latest` needed (that step is fragile because
+      # of the bundled-vs-overlay arborist deps).
 
       - name: Verify package version matches tag
         if: startsWith(github.ref, 'refs/tags/v')
