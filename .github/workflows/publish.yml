@@ -1,0 +1,59 @@
+name: publish
+
+# Triggered by pushing a tag like `v1.2.3` (must match package.json version).
+# Workflow:
+#   1. Build manifest.json from scripts/* (also runs as `prepublishOnly`).
+#   2. Verify the tag matches package.json version.
+#   3. `npm publish --provenance` using OIDC trusted publisher (no NPM_TOKEN).
+#
+# Configure trusted publisher at:
+#   https://www.npmjs.com/package/@ziuchen/super-clipboard-userscripts/access
+# (org: super-clipboard not used — package lives under user scope @ziuchen)
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "npm dist-tag (default: latest)"
+        required: false
+        default: latest
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+
+      # Native OIDC trusted-publisher flow needs npm CLI >= 11.5.1.
+      - name: Upgrade npm to OIDC-capable release
+        run: npm install -g npm@latest
+
+      - name: Verify package version matches tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag version ($TAG_VERSION) does not match package.json version ($PKG_VERSION)"
+            exit 1
+          fi
+
+      - name: Build manifest.json
+        run: node scripts/build-manifest.mjs
+
+      - name: Publish to npm (OIDC trusted publisher)
+        run: |
+          DIST_TAG="${{ github.event.inputs.tag || 'latest' }}"
+          npm publish --provenance --access public --tag "$DIST_TAG"

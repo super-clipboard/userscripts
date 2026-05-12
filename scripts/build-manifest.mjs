@@ -12,12 +12,14 @@
  * Anything where `meta.json.private === true` (or the directory name starts
  * with `_`) is excluded from the published manifest.
  *
- * The manifest is committed to the repo; jsDelivr serves it from
- *   https://cdn.jsdelivr.net/gh/super-clipboard/userscripts@<ref>/manifest.json
+ * Distribution: this repo is published as the npm package
+ *   @ziuchen/super-clipboard-userscripts
+ * and consumed via npmmirror's CDN-style file URL:
+ *   https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/<version>/files/<path>
  *
- * The GitHub Release workflow also attaches it as `manifest.json` so the
- * client can fall back to
- *   https://github.com/super-clipboard/userscripts/releases/latest/download/manifest.json
+ * `scripts/build-manifest.mjs` is also invoked as a `prepublishOnly` hook
+ * so the manifest is always rebuilt right before `npm publish` and packed
+ * into the tarball.
  */
 import { createHash } from "node:crypto";
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
@@ -27,10 +29,19 @@ import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = dirname(HERE);
 const SCRIPTS_DIR = join(ROOT, "scripts");
+const PKG_PATH = join(ROOT, "package.json");
 const OUT_PATH = join(ROOT, "manifest.json");
 
-const REMOTE_BASE_TEMPLATE =
-  "https://cdn.jsdelivr.net/gh/super-clipboard/userscripts@latest/scripts/";
+const PKG = JSON.parse(await readFile(PKG_PATH, "utf8"));
+const PKG_NAME = PKG.name;
+const PKG_VERSION = PKG.version;
+
+// npmmirror serves arbitrary files from a published version with the path
+// pattern below; we pin to the version in package.json so each release is
+// content-addressed (callers fetching `latest` get the latest published
+// version's manifest, but downloadURLs inside the manifest point at the
+// exact version they were generated from).
+const MIRROR_BASE = `https://registry.npmmirror.com/${PKG_NAME}/${PKG_VERSION}/files`;
 
 const META_RE = /\/\/\s*@(\S+)\s+(.+?)\s*$/gm;
 
@@ -84,7 +95,7 @@ async function main() {
     const source = await readFile(scriptPath, "utf8");
     const scriptMeta = parseScriptMeta(source);
     const sha256 = createHash("sha256").update(source).digest("hex");
-    const downloadURL = `${REMOTE_BASE_TEMPLATE}${id}/${id}.user.js`;
+    const downloadURL = `${MIRROR_BASE}/scripts/${id}/${id}.user.js`;
     items.push({
       id,
       name: meta.name ?? scriptMeta.name ?? id,
@@ -103,7 +114,9 @@ async function main() {
 
   const manifest = { manifestVersion: 1, items };
   await writeFile(OUT_PATH, JSON.stringify(manifest, null, 2) + "\n", "utf8");
-  console.log(`\n[manifest] wrote ${relative(process.cwd(), OUT_PATH)} (${items.length} items)`);
+  console.log(
+    `\n[manifest] wrote ${relative(process.cwd(), OUT_PATH)} (${items.length} items, pkg ${PKG_NAME}@${PKG_VERSION})`,
+  );
 }
 
 main().catch((err) => {

@@ -1,0 +1,22 @@
+{
+  "name": "@ziuchen/super-clipboard-userscripts",
+  "version": "0.1.0",
+  "description": "Manifest + bundled .user.js sources for the SuperClipboard script market.",
+  "homepage": "https://github.com/super-clipboard/userscripts",
+  "bugs": {
+    "url": "https://github.com/super-clipboard/userscripts/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/super-clipboard/userscripts.git"
+  },
+  "files": [
+    "manifest.json",
+    "scripts"
+  ],
+  "scripts": {
+    "build": "node scripts/build-manifest.mjs",
+    "prepublishOnly": "node scripts/build-manifest.mjs"
+  }
+}
