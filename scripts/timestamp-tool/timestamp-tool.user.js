@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         时间戳转换
 // @namespace    com.superclipboard.community.timestamp-tool
-// @version      0.1.0
+// @version      0.2.0
 // @description  在 Unix 时间戳和本地时间字符串之间互转
 // @author       super-clipboard
 // @run-at       foreground
 // @match-clip   text
 // @grant        globalNativeApi.*
+// @grant        utools.*
 // @tag          text
 // @tag          time
 // @tag          datetime
@@ -37,8 +38,9 @@ function parseInput(text) {
 }
 
 globalNativeApi.registerMenuCommand("时间戳转换", async (ctx) => {
-  if (!ctx.clip) return;
-  const body = await globalNativeApi.getClipBody(ctx.clip);
+  const target = ctx.clips?.[0];
+  if (!target) return;
+  const body = await globalNativeApi.getClipBody(target);
   const text = ((body && (body.text || body.preview)) || "").trim();
   const parsed = text ? parseInput(text) : null;
   const now = new Date();

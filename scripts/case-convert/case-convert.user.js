@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         命名风格转换
 // @namespace    com.superclipboard.community.case-convert
-// @version      0.1.0
+// @version      0.2.0
 // @description  在 camelCase / snake_case / kebab-case / PascalCase / CONSTANT_CASE 之间切换
 // @author       super-clipboard
 // @run-at       foreground
 // @match-clip   text
 // @grant        globalNativeApi.*
+// @grant        utools.*
 // @tag          text
 // @tag          case
 // @tag          naming
@@ -46,8 +47,9 @@ const styles = [
 ];
 
 globalNativeApi.registerMenuCommand("命名风格转换", async (ctx) => {
-  if (!ctx.clip) return;
-  const body = await globalNativeApi.getClipBody(ctx.clip);
+  const target = ctx.clips?.[0];
+  if (!target) return;
+  const body = await globalNativeApi.getClipBody(target);
   const text = ((body && (body.text || body.preview)) || "").trim();
   if (!text) return;
   const words = tokenize(text);

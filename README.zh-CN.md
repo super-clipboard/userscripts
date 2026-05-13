@@ -39,8 +39,10 @@ scripts/build-manifest.mjs        # 构建器；prepublishOnly 自动调用
 ```js
 // 注册一个右键菜单命令
 globalNativeApi.registerMenuCommand("命令名", async (ctx) => {
-  if (!ctx.clip) return;
-  const body = await globalNativeApi.getClipBody(ctx.clip);
+  // ctx.clips 始终是数组：单选时长度 1，多选时按列表顺序的全部选中项
+  const target = ctx.clips?.[0];
+  if (!target) return;
+  const body = await globalNativeApi.getClipBody(target);
   const text = body?.text ?? body?.preview ?? "";
   // ... 处理 text，可选：
   // utools.copyText(text)                                  // 写回剪贴板

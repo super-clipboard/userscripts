@@ -1,20 +1,22 @@
 // ==UserScript==
 // @name         JSON 格式化
 // @namespace    com.superclipboard.community.json-format
-// @version      0.1.0
+// @version      0.2.0
 // @description  把剪贴板里的 JSON 美化或压缩后写回剪贴板
 // @author       super-clipboard
 // @run-at       foreground
 // @match-clip   text
 // @grant        globalNativeApi.*
+// @grant        utools.*
 // @tag          text
 // @tag          json
 // @tag          format
 // ==/UserScript==
 
 function read(ctx) {
-  return ctx.clip
-    ? globalNativeApi.getClipBody(ctx.clip).then((b) => (b && (b.text || b.preview)) || "")
+  const target = ctx.clips?.[0];
+  return target
+    ? globalNativeApi.getClipBody(target).then((b) => (b && (b.text || b.preview)) || "")
     : Promise.resolve("");
 }
 

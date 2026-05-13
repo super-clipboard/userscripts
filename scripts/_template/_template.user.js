@@ -13,5 +13,5 @@
 // ==/UserScript==
 
 globalNativeApi.registerMenuCommand("Hello", (ctx) => {
-  globalNativeApi.notification({ title: "Hello", body: ctx.clip?.hash ?? "" });
+  globalNativeApi.notification({ title: "Hello", body: ctx.clips?.[0]?.hash ?? "" });
 });

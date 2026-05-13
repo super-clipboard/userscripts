@@ -9,6 +9,7 @@
 // @match-clip   text
 // @match-clip   image
 // @grant        globalNativeApi.*
+// @grant        utools.*
 // @tag          image
 // @tag          ocr
 // ==/UserScript==
@@ -167,8 +168,9 @@ globalNativeApi.addClipboardListener("image", async (clip) => {
 
 // ── Manual OCR menu command (image clips) ───────────────────────────────
 globalNativeApi.registerMenuCommand("OCR.space 识别图片", async (ctx) => {
-  if (!ctx.clip) return;
-  await ocrClip(ctx.clip, { notify: true, copy: true });
+  const target = ctx.clips?.[0];
+  if (!target) return;
+  await ocrClip(target, { notify: true, copy: true });
 });
 
 // ── Settings panel (always available) ───────────────────────────────────

@@ -1,20 +1,22 @@
 // ==UserScript==
 // @name         Base64 编解码
 // @namespace    com.superclipboard.community.base64-codec
-// @version      0.1.0
+// @version      0.2.0
 // @description  对剪贴板文本做 Base64 编码 / 解码（UTF-8）
 // @author       super-clipboard
 // @run-at       foreground
 // @match-clip   text
 // @grant        globalNativeApi.*
+// @grant        utools.*
 // @tag          text
 // @tag          encode
 // @tag          base64
 // ==/UserScript==
 
 async function read(ctx) {
-  if (!ctx.clip) return "";
-  const body = await globalNativeApi.getClipBody(ctx.clip);
+  const target = ctx.clips?.[0];
+  if (!target) return "";
+  const body = await globalNativeApi.getClipBody(target);
   return (body && (body.text || body.preview)) || "";
 }
 
