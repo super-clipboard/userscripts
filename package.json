@@ -36,6 +36,9 @@
     "./manifest.json": "./manifest.json",
     "./package.json": "./package.json"
   },
+  "devDependencies": {
+    "@super-clipboard/userscript-types": "^0.1.0"
+  },
   "scripts": {
     "build": "node scripts/build-manifest.mjs",
     "test": "node --test tests/lib.test.mjs",

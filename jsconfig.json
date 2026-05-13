@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "checkJs": false,
+    "noEmit": true,
+    "lib": ["ES2022", "DOM"],
+    "moduleResolution": "bundler"
+  },
+  "files": ["types.d.ts"],
+  "include": ["scripts/**/*.js", "scripts/**/*.mjs"]
+}
