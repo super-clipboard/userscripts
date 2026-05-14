@@ -20,7 +20,7 @@
   "ocrSource": "ocr.space",
   "ocrLanguage": "chs",
   "ocrEngine": "2",
-  "ocrAt": 1730000000000
+  "ocrAt": 1730000000000,
 }
 ```
 

@@ -44,9 +44,9 @@ globalNativeApi.registerMenuCommand("My Command", async (ctx) => {
   const text = body?.text ?? body?.preview ?? "";
 
   // Common operations:
-  utools.copyText(text);                                    // write back to clipboard
-  globalNativeApi.notification({ title, body });            // show a notification
-  document.body.innerHTML = "...";                          // build a UI
+  utools.copyText(text); // write back to clipboard
+  globalNativeApi.notification({ title, body }); // show a notification
+  document.body.innerHTML = "..."; // build a UI
   await globalNativeApi.showPanel({ width, height, placement: "center" });
 });
 ```
