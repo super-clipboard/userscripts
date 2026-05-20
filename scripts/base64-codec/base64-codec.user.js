@@ -6,8 +6,10 @@
 // @author       super-clipboard
 // @run-at       foreground
 // @match-clip   text
-// @grant        globalNativeApi.*
-// @grant        utools.*
+// @grant        globalNativeApi.getClipBody
+// @grant        globalNativeApi.registerMenuCommand
+// @grant        globalNativeApi.notification
+// @grant        utools.copyText
 // @tag          text
 // @tag          encode
 // @tag          base64

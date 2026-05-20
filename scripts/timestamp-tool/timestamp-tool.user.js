@@ -6,8 +6,11 @@
 // @author       super-clipboard
 // @run-at       foreground
 // @match-clip   text
-// @grant        globalNativeApi.*
-// @grant        utools.*
+// @grant        globalNativeApi.registerMenuCommand
+// @grant        globalNativeApi.getClipBody
+// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.showPanel
+// @grant        utools.copyText
 // @tag          text
 // @tag          time
 // @tag          datetime

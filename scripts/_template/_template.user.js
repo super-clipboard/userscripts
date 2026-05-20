@@ -7,7 +7,8 @@
 // @homepage     https://example.com
 // @run-at       foreground
 // @match-clip   text
-// @grant        globalNativeApi.*
+// @grant        globalNativeApi.registerMenuCommand
+// @grant        globalNativeApi.notification
 // @tag          example
 // @preinstall   false
 // ==/UserScript==

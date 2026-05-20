@@ -8,8 +8,17 @@
 // @run-at       foreground
 // @match-clip   text
 // @match-clip   image
-// @grant        globalNativeApi.*
-// @grant        utools.*
+// @grant        globalNativeApi.getValue
+// @grant        globalNativeApi.setValue
+// @grant        globalNativeApi.getClipBody
+// @grant        globalNativeApi.setClipMetadata
+// @grant        globalNativeApi.log
+// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.addClipboardListener
+// @grant        globalNativeApi.registerMenuCommand
+// @grant        globalNativeApi.closePanel
+// @grant        globalNativeApi.showPanel
+// @grant        utools.shellOpenExternal
 // @tag          image
 // @tag          ocr
 // ==/UserScript==
