@@ -11,20 +11,14 @@
 ## 行为
 
 - 手动：右键图片 → **OCR.space 识别图片**。识别结果会写入剪贴板，并以通知形式预览。
-- 自动：后台监听新图片，识别完成后**仅**把结果写入该剪贴项的 metadata，不打扰用户。
+- 自动：后台监听新图片，识别完成后把结果写入宿主专用的 `ocr/{hash}` 文档（供内置「图片文字搜索」复用），不打扰用户。
 
-```jsonc
-// 写入到 clip metadata 的字段
-{
-  "ocrText": "图片中识别出的文字",
-  "ocrSource": "ocr.space",
-  "ocrLanguage": "chs",
-  "ocrEngine": "2",
-  "ocrAt": 1730000000000,
-}
+```js
+// 写入宿主的 ocr/{hash} 文档（跨脚本共享、与图片内容寻址）
+await globalNativeApi.setClipOcrText(clip.hash, text);
 ```
 
-未来 SuperClipboard 的「图片文字搜索」可以直接索引 `ocrText` 字段。
+同一图片内容（同 hash）只存一份识别结果，卸载/重装本脚本后仍保留。
 
 ## 隐私
 

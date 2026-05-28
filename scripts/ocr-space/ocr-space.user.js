@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OCR.space 图片识别
 // @namespace    com.superclipboard.community.ocr-space
-// @version      0.1.0
-// @description  通过 ocr.space 在线 API 对图片剪贴板做 OCR；结果写入 clip metadata，供后续文字搜图使用。需要自行申请免费 API Key。
+// @version      0.2.0
+// @description  通过 ocr.space 在线 API 对图片剪贴板做 OCR；结果写入宿主的 ocr/{hash} 文档，供图片文字搜索使用。需要自行申请免费 API Key。
 // @author       super-clipboard
 // @homepage     https://ocr.space/ocrapi
 // @run-at       foreground
@@ -11,7 +11,7 @@
 // @grant        globalNativeApi.getValue
 // @grant        globalNativeApi.setValue
 // @grant        globalNativeApi.getClipBody
-// @grant        globalNativeApi.setClipMetadata
+// @grant        globalNativeApi.setClipOcrText
 // @grant        globalNativeApi.log
 // @grant        globalNativeApi.notification
 // @grant        globalNativeApi.addClipboardListener
@@ -147,13 +147,7 @@ async function ocrClip(clip, opts) {
     return null;
   }
 
-  await globalNativeApi.setClipMetadata(clip, {
-    ocrText: text,
-    ocrSource: "ocr.space",
-    ocrLanguage: language,
-    ocrEngine: engine,
-    ocrAt: Date.now(),
-  });
+  await globalNativeApi.setClipOcrText(clip.hash, text);
   globalNativeApi.log("[ocr-space] ok", clip.hash, "len=" + text.length);
 
   if (opts && opts.notify) {
@@ -245,7 +239,7 @@ globalNativeApi.registerMenuCommand("OCR.space 设置", async () => {
 
     <div class="hint">
       免费 API Key 申请：<a id="signup" href="${SIGNUP_URL}">${SIGNUP_URL}</a><br>
-      免费额度：每月约 25,000 次，每张图 ≤ 1MB。识别结果会写入剪贴项的 metadata（<code>ocrText</code>），未来图片文字搜索可以直接复用。
+      免费额度：每月约 25,000 次，每张图 ≤ 1MB。识别结果会写入宿主的 <code>ocr/{hash}</code> 文档，以供内置的图片文字搜索复用。
     </div>
   `;
 
