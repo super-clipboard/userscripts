@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         时间戳转换
 // @namespace    com.superclipboard.community.timestamp-tool
-// @version      0.2.0
+// @version      0.2.1
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/timestamp-tool/timestamp-tool.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/timestamp-tool/timestamp-tool.user.js
 // @description  在 Unix 时间戳和本地时间字符串之间互转
 // @author       super-clipboard
 // @run-at       foreground

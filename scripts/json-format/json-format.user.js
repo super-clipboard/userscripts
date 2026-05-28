@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         JSON 格式化
 // @namespace    com.superclipboard.community.json-format
-// @version      0.2.0
+// @version      0.2.1
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/json-format/json-format.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/json-format/json-format.user.js
 // @description  把剪贴板里的 JSON 美化或压缩后写回剪贴板
 // @author       super-clipboard
 // @run-at       foreground

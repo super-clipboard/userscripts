@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         OCR.space 图片识别
 // @namespace    com.superclipboard.community.ocr-space
-// @version      0.2.0
+// @version      0.2.1
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/ocr-space/ocr-space.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/ocr-space/ocr-space.user.js
 // @description  通过 ocr.space 在线 API 对图片剪贴板做 OCR；结果写入宿主的 ocr/{hash} 文档，供图片文字搜索使用。需要自行申请免费 API Key。
 // @author       super-clipboard
 // @homepage     https://ocr.space/ocrapi
