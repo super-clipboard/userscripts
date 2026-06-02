@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         智慧分词
 // @namespace    com.superclipboard.builtin.tokenize
-// @version      1.0.1
+// @version      1.0.2
 // @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/tokenize/tokenize.user.js
 // @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/tokenize/tokenize.user.js
 // @author       SuperClipboard
@@ -69,7 +69,8 @@ globalNativeApi.registerMenuCommand("智慧分词", async (ctx) => {
              max-width: 100%; overflow-wrap: break-word;
              transition: background 0.1s; }
       .tok:hover { background: hsl(var(--muted, 220 14% 92%)); }
-      .tok.selected { background: hsl(var(--primary, 220 90% 56%)); color: #fff; }
+      /* 修复点 1：使用变量适配深色模式下的选中文字颜色 */
+      .tok.selected { background: hsl(var(--primary, 220 90% 56%)); color: hsl(var(--primary-foreground, 0 0% 100%)); }
       .footer { padding: 8px 14px; flex-shrink: 0; display: flex; align-items: center;
                 justify-content: space-between; border-top: 1px solid hsl(var(--border, 220 14% 88%)); }
       .hint { font-size: 11px; color: hsl(var(--muted-foreground, 0 0% 40%)); }
@@ -78,7 +79,8 @@ globalNativeApi.registerMenuCommand("智慧分词", async (ctx) => {
              cursor: pointer; background: hsl(var(--accent, 220 14% 96%));
              color: hsl(var(--accent-foreground, 220 14% 20%)); }
       .btn:hover { background: hsl(var(--muted, 220 14% 92%)); }
-      .btn.primary { background: hsl(var(--primary, 220 90% 56%)); color: #fff; border-color: transparent; }
+      /* 修复点 2：使用变量适配深色模式下的主按钮文字颜色 */
+      .btn.primary { background: hsl(var(--primary, 220 90% 56%)); color: hsl(var(--primary-foreground, 0 0% 100%)); border-color: transparent; }
       .btn.primary:hover { opacity: 0.88; }
     </style>
     <div class="header">
