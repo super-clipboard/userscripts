@@ -10,7 +10,7 @@
 // @match-clip   text
 // @grant        globalNativeApi.getClipBody
 // @grant        globalNativeApi.registerMenuCommand
-// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.toast
 // @grant        utools.copyText
 // @tag          text
 // @tag          json
@@ -37,12 +37,12 @@ globalNativeApi.registerMenuCommand("格式化 JSON", async (ctx) => {
   if (!text) return;
   const r = tryParse(text);
   if (!r.ok) {
-    globalNativeApi.notification({ title: "JSON 解析失败", body: r.err.message });
+    globalNativeApi.toast({ title: "JSON 解析失败", body: r.err.message });
     return;
   }
   const pretty = JSON.stringify(r.value, null, 2);
   utools.copyText(pretty);
-  globalNativeApi.notification({ title: "已格式化 JSON", body: `${pretty.length} chars` });
+  globalNativeApi.toast({ title: "已格式化 JSON", body: `${pretty.length} chars` });
 });
 
 globalNativeApi.registerMenuCommand("压缩 JSON", async (ctx) => {
@@ -50,10 +50,10 @@ globalNativeApi.registerMenuCommand("压缩 JSON", async (ctx) => {
   if (!text) return;
   const r = tryParse(text);
   if (!r.ok) {
-    globalNativeApi.notification({ title: "JSON 解析失败", body: r.err.message });
+    globalNativeApi.toast({ title: "JSON 解析失败", body: r.err.message });
     return;
   }
   const min = JSON.stringify(r.value);
   utools.copyText(min);
-  globalNativeApi.notification({ title: "已压缩 JSON", body: `${min.length} chars` });
+  globalNativeApi.toast({ title: "已压缩 JSON", body: `${min.length} chars` });
 });

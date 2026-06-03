@@ -10,7 +10,7 @@
 // @match-clip   text
 // @grant        globalNativeApi.registerMenuCommand
 // @grant        globalNativeApi.getClipBody
-// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.toast
 // @grant        globalNativeApi.showPanel
 // @grant        utools.copyText
 // @tag          text
@@ -84,7 +84,7 @@ globalNativeApi.registerMenuCommand("命名风格转换", async (ctx) => {
     el.addEventListener("click", () => {
       const t = decodeURIComponent(el.getAttribute("data-text"));
       utools.copyText(t);
-      globalNativeApi.notification({ title: "已复制", body: t });
+      globalNativeApi.toast({ title: "已复制", body: t });
     });
   });
   await globalNativeApi.showPanel({ width: 360, height: 320, placement: "center" });

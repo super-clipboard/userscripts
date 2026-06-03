@@ -42,6 +42,6 @@
     "prepublishOnly": "node scripts/build-manifest.mjs && node --test tests/lib.test.mjs"
   },
   "devDependencies": {
-    "@super-clipboard/userscript-types": "^0.6.0"
+    "@super-clipboard/userscript-types": "^0.7.0"
   }
 }

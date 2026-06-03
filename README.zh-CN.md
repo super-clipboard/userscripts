@@ -46,7 +46,7 @@ globalNativeApi.registerMenuCommand("命令名", async (ctx) => {
   const text = body?.text ?? body?.preview ?? "";
   // ... 处理 text，可选：
   // utools.copyText(text)                                  // 写回剪贴板
-  // globalNativeApi.notification({ title, body })          // 弹通知
+  // globalNativeApi.toast({ title, body })          // 显示应用内提示
   // document.body.innerHTML = "..."; await globalNativeApi.showPanel({ width, height, placement })
 });
 ```

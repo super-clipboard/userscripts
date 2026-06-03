@@ -8,11 +8,11 @@
 // @run-at       foreground
 // @match-clip   text
 // @grant        globalNativeApi.registerMenuCommand
-// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.toast
 // @tag          example
 // @preinstall   false
 // ==/UserScript==
 
 globalNativeApi.registerMenuCommand("Hello", (ctx) => {
-  globalNativeApi.notification({ title: "Hello", body: ctx.clips?.[0]?.hash ?? "" });
+  globalNativeApi.toast({ title: "Hello", body: ctx.clips?.[0]?.hash ?? "" });
 });

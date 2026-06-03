@@ -10,7 +10,7 @@
 // @match-clip   text
 // @grant        globalNativeApi.registerMenuCommand
 // @grant        globalNativeApi.getClipBody
-// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.toast
 // @grant        globalNativeApi.showPanel
 // @require      https://registry.npmmirror.com/qrcode-encoder/1.3.0/files/dist/iife/qrcode-encoder.iife.js#sha256-5KyVbh3LWYvV9VB/OSCGI2JLqBoIulvKW0af8TISAMA=
 // @tag          text
@@ -37,7 +37,7 @@ globalNativeApi.registerMenuCommand("生成二维码", async (ctx) => {
   try {
     svg = buildSVG(currentLevel);
   } catch (err) {
-    globalNativeApi.notification({
+    globalNativeApi.toast({
       title: "二维码生成失败",
       body: err && err.message ? err.message : String(err),
     });
@@ -104,7 +104,7 @@ globalNativeApi.registerMenuCommand("生成二维码", async (ctx) => {
       // 当前等级下 payload 超限，回退到上一个可用等级
       currentLevel = prev;
       select.value = prev;
-      globalNativeApi.notification({
+      globalNativeApi.toast({
         title: "容错等级切换失败",
         body: "当前文本在此等级下超出二维码容量上限",
       });

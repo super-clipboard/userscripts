@@ -15,7 +15,7 @@
 // @grant        globalNativeApi.getClipBody
 // @grant        globalNativeApi.setClipOcrText
 // @grant        globalNativeApi.log
-// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.toast
 // @grant        globalNativeApi.addClipboardListener
 // @grant        globalNativeApi.registerMenuCommand
 // @grant        globalNativeApi.closePanel
@@ -112,7 +112,7 @@ async function ocrClip(clip, opts) {
   const key = await getKey();
   if (!key) {
     if (opts && opts.notify) {
-      globalNativeApi.notification({
+      globalNativeApi.toast({
         title: "OCR.space",
         body: "请先在右键菜单「OCR.space 设置」中填入 API Key。",
       });
@@ -122,7 +122,7 @@ async function ocrClip(clip, opts) {
   const body = await globalNativeApi.getClipBody(clip);
   if (!body || body.type !== "image" || !body.bytes) {
     if (opts && opts.notify) {
-      globalNativeApi.notification({ title: "OCR.space", body: "当前剪贴板不是图片。" });
+      globalNativeApi.toast({ title: "OCR.space", body: "当前剪贴板不是图片。" });
     }
     return null;
   }
@@ -144,7 +144,7 @@ async function ocrClip(clip, opts) {
   } catch (err) {
     globalNativeApi.log("[ocr-space] api failed", clip.hash, err.message || String(err));
     if (opts && opts.notify) {
-      globalNativeApi.notification({ title: "OCR 失败", body: err.message || String(err) });
+      globalNativeApi.toast({ title: "OCR 失败", body: err.message || String(err) });
     }
     return null;
   }
@@ -153,7 +153,7 @@ async function ocrClip(clip, opts) {
   globalNativeApi.log("[ocr-space] ok", clip.hash, "len=" + text.length);
 
   if (opts && opts.notify) {
-    globalNativeApi.notification({
+    globalNativeApi.toast({
       title: text ? "OCR 完成" : "OCR 完成（空结果）",
       body: text ? text.slice(0, 120) : "图片中未识别到文字",
     });
@@ -264,7 +264,7 @@ globalNativeApi.registerMenuCommand("OCR.space 设置", async () => {
     const e = document.getElementById("e").value;
     const a = document.getElementById("a").checked;
     if (!k) {
-      globalNativeApi.notification({ title: "请输入 API Key", body: "" });
+      globalNativeApi.toast({ title: "请输入 API Key", body: "" });
       return;
     }
     await Promise.all([
@@ -273,7 +273,7 @@ globalNativeApi.registerMenuCommand("OCR.space 设置", async () => {
       globalNativeApi.setValue(ENGINE_STORE, e),
       globalNativeApi.setValue(AUTO_STORE, a),
     ]);
-    globalNativeApi.notification({
+    globalNativeApi.toast({
       title: "OCR.space 设置已保存",
       body: a ? "已开启后台自动 OCR" : "",
     });

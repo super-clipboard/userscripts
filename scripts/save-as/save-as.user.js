@@ -15,7 +15,7 @@
 // @grant        globalNativeApi.saveFile
 // @grant        globalNativeApi.copyLocalFile
 // @grant        globalNativeApi.error
-// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.toast
 // @grant        utools.showOpenDialog
 // @grant        utools.getPath
 // @tag          text
@@ -97,12 +97,12 @@ globalNativeApi.registerMenuCommand("另存为...", async (ctx) => {
   }
 
   if (failCount === 0) {
-    await globalNativeApi.notification({
+    await globalNativeApi.toast({
       title: "另存为成功",
       body: `已成功保存 ${successCount} 个项目到 ${targetDir}`,
     });
   } else {
-    await globalNativeApi.notification({
+    await globalNativeApi.toast({
       title: `另存为完成 (有 ${failCount} 个失败)`,
       body: `成功 ${successCount} 个。失败原因: ${errors.slice(0, 2).join("; ")}${errors.length > 2 ? " 等" : ""}`,
     });

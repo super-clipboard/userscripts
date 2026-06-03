@@ -10,7 +10,7 @@
 // @match-clip   text
 // @grant        globalNativeApi.getClipBody
 // @grant        globalNativeApi.registerMenuCommand
-// @grant        globalNativeApi.notification
+// @grant        globalNativeApi.toast
 // @grant        utools.copyText
 // @tag          text
 // @tag          encode
@@ -45,9 +45,9 @@ globalNativeApi.registerMenuCommand("Base64 编码", async (ctx) => {
   try {
     const out = utf8Encode(text);
     utools.copyText(out);
-    globalNativeApi.notification({ title: "Base64 编码完成", body: `${out.length} chars` });
+    globalNativeApi.toast({ title: "Base64 编码完成", body: `${out.length} chars` });
   } catch (err) {
-    globalNativeApi.notification({ title: "编码失败", body: err.message ?? String(err) });
+    globalNativeApi.toast({ title: "编码失败", body: err.message ?? String(err) });
   }
 });
 
@@ -57,8 +57,8 @@ globalNativeApi.registerMenuCommand("Base64 解码", async (ctx) => {
   try {
     const out = utf8Decode(text);
     utools.copyText(out);
-    globalNativeApi.notification({ title: "Base64 解码完成", body: `${out.length} chars` });
+    globalNativeApi.toast({ title: "Base64 解码完成", body: `${out.length} chars` });
   } catch (err) {
-    globalNativeApi.notification({ title: "解码失败", body: "不是合法的 Base64 / UTF-8 字符串" });
+    globalNativeApi.toast({ title: "解码失败", body: "不是合法的 Base64 / UTF-8 字符串" });
   }
 });

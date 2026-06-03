@@ -45,7 +45,7 @@ globalNativeApi.registerMenuCommand("My Command", async (ctx) => {
 
   // Common operations:
   utools.copyText(text); // write back to clipboard
-  globalNativeApi.notification({ title, body }); // show a notification
+  globalNativeApi.toast({ title, body }); // show an in-app toast
   document.body.innerHTML = "..."; // build a UI
   await globalNativeApi.showPanel({ width, height, placement: "center" });
 });
