@@ -2,8 +2,8 @@
 // @name         另存为
 // @namespace    com.superclipboard.builtin.saveas
 // @version      1.1.1
-// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/save-as/save-as.user.js
-// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/save-as/save-as.user.js
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/save-as/save-as.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/save-as/save-as.user.js
 // @author       SuperClipboard
 // @description  把当前剪贴板内容另存到选定文件夹下
 // @run-at       foreground

@@ -2,8 +2,8 @@
 // @name         Base64 编解码
 // @namespace    com.superclipboard.community.base64-codec
 // @version      0.2.1
-// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/base64-codec/base64-codec.user.js
-// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/base64-codec/base64-codec.user.js
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/base64-codec/base64-codec.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/base64-codec/base64-codec.user.js
 // @description  对剪贴板文本做 Base64 编码 / 解码（UTF-8）
 // @author       super-clipboard
 // @run-at       foreground

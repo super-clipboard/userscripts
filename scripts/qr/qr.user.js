@@ -2,8 +2,8 @@
 // @name         二维码生成
 // @namespace    com.superclipboard.builtin.qr
 // @version      1.0.1
-// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/qr/qr.user.js
-// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/qr/qr.user.js
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/qr/qr.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/qr/qr.user.js
 // @author       SuperClipboard
 // @description  把当前文本剪贴板生成二维码并在浮窗显示（基于 qrcode-encoder）
 // @run-at       foreground

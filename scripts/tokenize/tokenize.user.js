@@ -2,8 +2,8 @@
 // @name         智慧分词
 // @namespace    com.superclipboard.builtin.tokenize
 // @version      1.0.2
-// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/tokenize/tokenize.user.js
-// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/tokenize/tokenize.user.js
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/tokenize/tokenize.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/tokenize/tokenize.user.js
 // @author       SuperClipboard
 // @description  对当前文本剪贴板进行中文智慧分词并展示（基于 segmentit）
 // @run-at       foreground

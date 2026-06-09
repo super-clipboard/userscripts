@@ -2,8 +2,8 @@
 // @name         命名风格转换
 // @namespace    com.superclipboard.community.case-convert
 // @version      0.2.1
-// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/case-convert/case-convert.user.js
-// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.5.0/files/scripts/case-convert/case-convert.user.js
+// @updateURL    https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/case-convert/case-convert.user.js
+// @downloadURL  https://registry.npmmirror.com/@ziuchen/super-clipboard-userscripts/0.6.1/files/scripts/case-convert/case-convert.user.js
 // @description  在 camelCase / snake_case / kebab-case / PascalCase / CONSTANT_CASE 之间切换
 // @author       super-clipboard
 // @run-at       foreground
