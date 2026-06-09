@@ -1,6 +1,6 @@
 {
   "name": "@ziuchen/super-clipboard-userscripts",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "SuperClipboard script-market manifest, bundled .user.js sources, and a small JS library (URL helpers, manifest validator, mirror presets).",
   "keywords": [
     "clipboard",
